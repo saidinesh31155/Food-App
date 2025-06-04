@@ -1,5 +1,5 @@
 name: docker deployment
-on: workflow_dispatch
+on: push
 jobs: 
   build:
     runs-on: ubuntu-latest
@@ -15,14 +15,22 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
       - name: push image to docker hub
         run: docker push ${{vars.DOCKER_USERNAME}}/food-app
-  deploy:
+  old-deployment:
     needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Remove COntainer
+        run: docker container rm -f ${{vars.CONTAINER_NAME}}
+      - name: remove old image
+        run: docker rmi ${{vars.DOCKER_USERNAME}}/food-app
+  deploy:
+    needs: old-deployment
     runs-on: self-hosted
     steps:
       - name: pull the image
         run: docker pull ${{vars.DOCKER_USERNAME}}/food-app
       - name: run the container
-        run: docker container run -dt --name food-app -p 80:80 ${{vars.DOCKER_USERNAME}}/food-app
+        run: docker container run -dt --name ${{vars.CONTAINER_NAME}} -p 80:80 ${{vars.DOCKER_USERNAME}}/food-app
       - name: container status
         run: docker container ps -a
 
