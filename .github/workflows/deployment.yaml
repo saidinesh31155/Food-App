@@ -9,7 +9,7 @@ jobs:
       - name: docker image build
         run: docker build -t ${{vars.DOCKER_USERNAME}}/food-app:latest .
       - name: docker image tag
-        run: docker image tag ${{vars.DOCKER_USERNAME}}/food-app:latest ${{vars.DOCKER_USERNAME}}/food-app:${{github.run_number}}
+        run: docker image tag ${{vars.DOCKER_USERNAME}}/food-app:latest ${{vars.DOCKER_USERNAME}}/food-app:$GITHUB_RUN_NUMBER
       - name: Docker Login
         uses: docker/login-action@v3.4.0
         with:
@@ -18,7 +18,7 @@ jobs:
       - name: push latest image to docker hub
         run: docker push ${{vars.DOCKER_USERNAME}}/food-app:latest
       - name: push tagged image for backup
-        run: docker push ${{vars.DOCKER_USERNAME}}/food-app:${{github.run_number}}
+        run: docker push ${{vars.DOCKER_USERNAME}}/food-app:$GITHUB_RUN_NUMBER
       
   old-deployment:
     needs: build
