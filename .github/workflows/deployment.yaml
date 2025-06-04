@@ -2,7 +2,7 @@ name: docker deployment
 on: workflow_dispatch
 jobs: 
   build:
-    runs_on: ubuntu-latest
+    run_on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4.2.2
