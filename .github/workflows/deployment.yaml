@@ -15,3 +15,18 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
       - name: push image to docker hub
         run: docker push ${{vars.DOCKER_USERNAME}}/food-app
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: pull the image
+        run: docker pull ${{vars.DOCKER_USERNAME}}/food-app
+      - name: run the container
+        run: docker container run -dt --name food-app -p 80:80 ${{vars.DOCKER_USERNAME}}/food-app
+      - name: container status
+        run: docker container ps -a
+
+
+
+
+    
