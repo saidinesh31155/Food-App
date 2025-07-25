@@ -21,8 +21,6 @@ jobs:
     steps:
       - name: Remove Container
         run: docker container rm -f food-app
-      - name: remove old image
-        run: docker rm ${{vars.DOCKER_USERNAME}}/food-app
   deploy:
     needs: old-deployment
     runs-on: self-hosted
