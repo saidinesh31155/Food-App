@@ -15,15 +15,9 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
       - name: push latest image to docker hub
         run: docker push ${{vars.DOCKER_USERNAME}}/food-app:latest
-  old-deployment:
-    needs: build
-    runs-on: self-hosted
-    steps:
-      - name: Remove Container
-        run: docker container rm -f food-app
   deploy:
-    needs: old-deployment
-    runs-on: self-hosted
+    needs: build
+    runs-on: deploy
     steps:
       - name: pull the image
         run: docker pull ${{vars.DOCKER_USERNAME}}/food-app
