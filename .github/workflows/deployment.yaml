@@ -28,7 +28,7 @@ jobs:
       - name: pull the image
         run: docker pull ${{vars.DOCKER_USERNAME}}/food-app
       - name: run the container
-        run: docker container run -dt --name food -p 8085:80 ${{vars.DOCKER_USERNAME}}/food-app
+        run: docker container run -dt --name food-prod -p 8085:80 ${{vars.DOCKER_USERNAME}}/food-app
       - name: container status
         run: docker container ps -a
 
